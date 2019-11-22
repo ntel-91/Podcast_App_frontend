@@ -6,5 +6,7 @@ export default createAppContainer(
     createSwitchNavigator({
         Welcome: WelcomeNavigator,
         MainStack: MainStackNavigator
+      },{
+        initialRouteName: 'MainStack'
       })
 )

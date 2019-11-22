@@ -15,7 +15,8 @@ const MainTabNavigator = createBottomTabNavigator({
         return{
             headerTitle: routeName
         }
-    }
+    },
+    initialRouteName: 'Search'
 })
 
 export default createStackNavigator({
