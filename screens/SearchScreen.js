@@ -1,107 +1,86 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar.js'
+import { FlatList } from 'react-native-gesture-handler';
 
 
 class SearchScreen extends Component {
     
-    xml2json = (srcDOM) => {
-        let children = [...srcDOM.children];
-        
-        // base case for recursion. 
-        if (!children.length) {
-          if (srcDOM.innerHTML) {
-              return srcDOM.innerHTML
-          } else if (srcDOM.tagName === 'enclosure'){
-              return srcDOM.getAttribute('url')
-          }  
-        }
-      
-        // initializing object to be returned.
-        let jsonResult = {};
-        
-        for (let child of children) {
-          
-          // checking is child has siblings of same name. 
-          let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
-          
-          // if child is array, save the values as array, else as strings. 
-          if (childIsArray) {
-            if (jsonResult[child.nodeName] === undefined) {   
-              jsonResult[child.nodeName] = [xml2json(child)];
-            } else {
-              jsonResult[child.nodeName].push(xml2json(child));
-            }
-          } else {
-              jsonResult[child.nodeName] = xml2json(child);
-              
-          }
-        }
-        
-        return jsonResult;
-    }
-
     state = {
-        term: ""
+        term: "",
+        podcxast: '',
+        podcastsArray: []
     }
 
     handleChange = (text) => {
         this.setState({
-            term: text
+            term: text,
+            podcast: '',
+            podcastsArray: []
         })
     }
 
-    submit = () => {
-        // // fetch itunes search api
-        // let URL = `https://itunes.apple.com/search?term=podcast&genreId=1402&limit=20`
+    submit = (searchTerm) => {
+        let URL = `https://itunes.apple.com/search?term=${searchTerm}&media=podcast&limit=8`
         // let CORS = 'https://cors-anywhere.herokuapp.com/'
-        // fetch(URL)
-        // .then(res => res.json())
-        // .then(data => {
-        //     console.log(data)
-        // })
-   
-        // fetch rss feed
-        let URL = `http://feeds.feedburner.com/TEDTalks_audio`
-        let CORS = 'https://cors-anywhere.herokuapp.com/'
         fetch(URL)
-        .then(res => res.text())
+        .then(res => res.json())
         .then(data => {
-            // console.log(data)
-            let parser = new DOMParser
-            let xml = parser.parseFromString(data, 'application/xml');
-            console.log(xml2json(xml))
+            results = data.results.map((podcast) => {
+                return {
+                    collection_name: podcast.collectionCensoredName,
+                    artist_name: podcast.artistName,
+                    image: podcast.artworkUrl60
+                }
+            })
+            this.setState({
+                podcastsArray: results
+            })
         })
-    
-
     }
-
-
-    
-    
+  
     render() {
         return (
             <View  style={styles.container}>
+                
+                
+                {/* <SearchBar 
+                    // term={term}
+                    onTermSubmit={this.testFetchFunction}
+                /> */}
+
+                <Text>Search Page</Text>
+                <Button 
+                    title="Navigate to Podcast Show Screen"
+                    onPress={() => this.props.navigation.navigate('PodcastShow')}
+                />
                 <TextInput 
                     defaultValue={this.state.term}
                     onChangeText={this.handleChange}
                     placeholder="Search"
                 />
-                <TouchableOpacity onPress={this.submit}>
+
+                <TouchableOpacity onPress={() => this.submit(this.state.term)}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
-                
-                
-                <SearchBar 
-                    // term={term}
-                    onTermSubmit={this.testFetchFunction}
+
+                <FlatList
+                    // keyExtractor=
+                    data={this.state.podcastsArray}
+                    renderItem={({ item }) => {
+                        return (
+                            <View>
+                                <Text>{item.collection_name}</Text>
+                                <Image
+                                    style={{width: 50, height: 50}}
+                                    // source={item.image}
+                                    source={{uri: item.image}}
+                                />    
+                            </View>
+                        )
+                    }}
                 />
-                <Text>DiscoverSearch Page</Text>
-                <Text>Different Podcasts will render here</Text>
-                <Button 
-                    title="Navigate to Podcast Show Screen"
-                    onPress={() => this.props.navigation.navigate('PodcastShow')}
-                />
+                
             </View>
         )
     }
