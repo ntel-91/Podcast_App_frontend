@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { StyleSheet, Image, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar.js'
 import { FlatList } from 'react-native-gesture-handler';
+import { setRssFeed } from '../action'
+import { connect } from 'react-redux'
 
 
 class SearchScreen extends Component {
     
     state = {
         term: "",
-        podcxast: '',
+        podcast: '',
         podcastsArray: []
     }
 
@@ -16,7 +18,8 @@ class SearchScreen extends Component {
         this.setState({
             term: text,
             podcast: '',
-            podcastsArray: []
+            podcastsArray: [],
+            rss: ''
         })
     }
 
@@ -30,13 +33,18 @@ class SearchScreen extends Component {
                 return {
                     collection_name: podcast.collectionCensoredName,
                     artist_name: podcast.artistName,
-                    image: podcast.artworkUrl60
+                    image: podcast.artworkUrl60,
+                    rss: podcast.feedUrl
                 }
             })
             this.setState({
                 podcastsArray: results
             })
         })
+    }
+
+    renderPodcastShows = () => {
+        console.log('did')
     }
   
     render() {
@@ -49,11 +57,6 @@ class SearchScreen extends Component {
                     onTermSubmit={this.testFetchFunction}
                 /> */}
 
-                <Text>Search Page</Text>
-                <Button 
-                    title="Navigate to Podcast Show Screen"
-                    onPress={() => this.props.navigation.navigate('PodcastShow')}
-                />
                 <TextInput 
                     defaultValue={this.state.term}
                     onChangeText={this.handleChange}
@@ -70,12 +73,18 @@ class SearchScreen extends Component {
                     renderItem={({ item }) => {
                         return (
                             <View>
-                                <Text>{item.collection_name}</Text>
-                                <Image
-                                    style={{width: 50, height: 50}}
-                                    // source={item.image}
-                                    source={{uri: item.image}}
-                                />    
+                                <TouchableOpacity 
+                                    onPress={() => {
+                                        this.props.setRssFeed(item)
+                                        this.props.navigation.navigate('PodcastShow')}}
+                                >
+                                    <Text>{item.collection_name}</Text>
+                                    <Image
+                                        style={{width: 50, height: 50}}
+                                        // source={item.image}
+                                        source={{uri: item.image}}
+                                    />    
+                                </TouchableOpacity>
                             </View>
                         )
                     }}
@@ -85,6 +94,10 @@ class SearchScreen extends Component {
         )
     }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -96,4 +109,4 @@ const styles = StyleSheet.create({
 });
   
 
-  export default SearchScreen
+  export default connect(null, { setRssFeed })(SearchScreen)

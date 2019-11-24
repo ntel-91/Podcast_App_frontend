@@ -3,12 +3,17 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import AppNavigator from './navigation/AppNavigator.js'
 // import { createBottomNavigator }from 'react-navigation-stack'
-
+import reducer from './reducer/index.js'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
 class App extends Component {
   render() {
-    return <AppNavigator />
-    // return <AppContainer />
+    return (
+      <Provider store={createStore(reducer)}>
+        <AppNavigator />
+      </Provider>
+      )
   }
 }
 
@@ -38,8 +43,6 @@ class App extends Component {
 // })
 
 // const AppContainer = createAppContainer(AppSwitchNavigator)
-
-
 
 const styles = StyleSheet.create({
   container: {

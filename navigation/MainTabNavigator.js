@@ -12,11 +12,11 @@ const MainTabNavigator = createBottomTabNavigator({
 },{
     navigationOptions:({navigation})=>{
         const {routeName} = navigation.state.routes[navigation.state.index]
-        return{
+        return {
             headerTitle: routeName
         }
     },
-    initialRouteName: 'Search'
+    initialRouteName: 'Podcasts'
 })
 
 export default createStackNavigator({

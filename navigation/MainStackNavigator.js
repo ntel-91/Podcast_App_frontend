@@ -7,4 +7,5 @@ export default createStackNavigator({
     PodcastShow: PodcastShowNavigator
 },{
     headerMode: "none"
-})
+}
+)
