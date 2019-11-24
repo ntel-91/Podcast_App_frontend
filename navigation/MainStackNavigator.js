@@ -1,11 +1,13 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import MainTabNavigator from './MainTabNavigator.js'
-import PodcastShowNavigator from './PodcastShowNavigator.js'
+import PodcastShowScreen from '../screens/PodcastShowScreen.js'
+import PodcastEpisodeScreen from '../screens/PodcastEpisodeScreen.js'
+import DiscoverSearchScreen from '../screens/DiscoverSearchScreen.js'
+
 
 export default createStackNavigator({
     MainTab: MainTabNavigator,
-    PodcastShow: PodcastShowNavigator
-},{
-    headerMode: "none"
-}
-)
+    PodcastShow: PodcastShowScreen,
+    PodcastEpisode: PodcastEpisodeScreen,
+    DiscoverSearch: DiscoverSearchScreen
+})

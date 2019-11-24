@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import { StyleSheet } from 'react-native';
 import AppNavigator from './navigation/AppNavigator.js'
-// import { createBottomNavigator }from 'react-navigation-stack'
 import reducer from './reducer/index.js'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -17,33 +15,6 @@ class App extends Component {
   }
 }
 
-// class WelcomeScreen extends Component {
-//   render() {
-//     return (
-//       <View  style={styles.container}>
-//         <Text>Welcome Screen</Text>
-//       </View>
-//     )
-//   }
-// }
-
-// class DashboardScreen extends Component {
-//   render() {
-//     return (
-//       <View>
-//         <Text>Dashboard Screen</Text>
-//       </View>
-//     )
-//   }
-// }
-
-// const AppSwitchNavigator = createSwitchNavigator({
-//   Welcome: WelcomeScreen,
-//   Dashboard: DashboardScreen
-// })
-
-// const AppContainer = createAppContainer(AppSwitchNavigator)
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -52,6 +23,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
 
 export default App
