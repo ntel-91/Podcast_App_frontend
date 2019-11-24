@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 
 class PodcastShowScreen extends Component {
     render() {
-        console.log(this.props)
         return (
         <View  style={styles.container}>
             <Text>PodcastShow Screen</Text>

@@ -7,4 +7,6 @@ export default createStackNavigator({
     Welcome: WelcomeScreen,
     Login: LoginScreen,
     CreateAccount: CreateAccountScreen
+},{
+    initialRouteName: 'Login'
 })

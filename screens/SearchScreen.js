@@ -42,10 +42,6 @@ class SearchScreen extends Component {
             })
         })
     }
-
-    renderPodcastShows = () => {
-        console.log('did')
-    }
   
     render() {
         return (
@@ -96,9 +92,6 @@ class SearchScreen extends Component {
 }
 
 
-
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -109,4 +102,4 @@ const styles = StyleSheet.create({
 });
   
 
-  export default connect(null, { setRssFeed })(SearchScreen)
+export default connect(null, { setRssFeed })(SearchScreen)
