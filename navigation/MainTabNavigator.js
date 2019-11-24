@@ -10,6 +10,8 @@ export default createBottomTabNavigator({
     Discover: DiscoverScreen,
     Search: SearchScreen
 },{
+    initialRouteName: 'Search'
+},{
     navigationOptions:({navigation})=>{
         const {routeName} = navigation.state.routes[navigation.state.index]
         return {

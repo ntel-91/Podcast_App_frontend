@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Image, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar.js'
 import { FlatList } from 'react-native-gesture-handler';
-import { setRssFeed } from '../action'
+import { setPodcastData } from '../action'
 import { connect } from 'react-redux'
 
 
@@ -24,8 +24,8 @@ class SearchScreen extends Component {
     }
 
     submit = (searchTerm) => {
+        
         let URL = `https://itunes.apple.com/search?term=${searchTerm}&media=podcast&limit=8`
-        // let CORS = 'https://cors-anywhere.herokuapp.com/'
         fetch(URL)
         .then(res => res.json())
         .then(data => {
@@ -33,7 +33,8 @@ class SearchScreen extends Component {
                 return {
                     collection_name: podcast.collectionCensoredName,
                     artist_name: podcast.artistName,
-                    image: podcast.artworkUrl60,
+                    image_small: podcast.artworkUrl60,
+                    image_medium: podcast.artworkUrl100,
                     rss: podcast.feedUrl
                 }
             })
@@ -71,14 +72,14 @@ class SearchScreen extends Component {
                             <View>
                                 <TouchableOpacity 
                                     onPress={() => {
-                                        this.props.setRssFeed(item)
+                                        this.props.setPodcastData(item)
                                         this.props.navigation.navigate('PodcastShow')}}
                                 >
                                     <Text>{item.collection_name}</Text>
                                     <Image
                                         style={{width: 50, height: 50}}
                                         // source={item.image}
-                                        source={{uri: item.image}}
+                                        source={{uri: item.image_small}}
                                     />    
                                 </TouchableOpacity>
                             </View>
@@ -102,4 +103,4 @@ const styles = StyleSheet.create({
 });
   
 
-export default connect(null, { setRssFeed })(SearchScreen)
+export default connect(null, { setPodcastData })(SearchScreen)

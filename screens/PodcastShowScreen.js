@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { setRssFeed } from '../action'
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
+
 import { connect } from 'react-redux'
 
 
+
 class PodcastShowScreen extends Component {
+
     render() {
+        
         return (
         <View  style={styles.container}>
             <Text>PodcastShow Screen</Text>
-            
+            <Image
+                style={{width: 50, height: 50}}
+                source={{uri: this.props.image_small}}
+            />    
             {/* <Text>{this.props.rss.collection_name}</Text> */}
             <Button 
                 title="Go to episdoe"
@@ -23,7 +29,7 @@ class PodcastShowScreen extends Component {
 
 mapStateToProps = (state) => {
     return {
-        data: state.rss
+        podcastData: state.podcastData
     }
 }
 

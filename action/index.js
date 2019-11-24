@@ -2,8 +2,8 @@ export function setUserPodcasts(podcasts){
     return {type: "SET_USER_PODCASTS", payload: podcasts}
 }
 
-export function setRssFeed(rss){
-    return {type: "SET_RSS", payload: rss}
+export function setPodcastData(podcastData){
+    return {type: "SET_PODCAST_DATA", payload: podcastData}
 }
 
 export function handleChange(text){
