@@ -2,10 +2,54 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 
 import { connect } from 'react-redux'
+import { FlatList } from 'react-native-gesture-handler';
 
 
 
 class PodcastShowScreen extends Component {
+
+    state = {
+        podcastDescription: '',
+        podcastEpisodes: []
+    }
+    
+    componentDidMount(){
+        console.log("RSS in global state: ", this.props.podcastData)
+        fetch('http://localhost:3000/podcastdata',{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'  
+            },
+            body: JSON.stringify({
+                rss: this.props.podcastData.rss
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            this.setState({
+                podcastDescription: data.description,
+                podcastEpisodes: data.episodes_info
+            })
+        })
+    }
+
+    // renderEpisodesInfo = (episodes) => {
+    //     return (
+    //         <View>
+    //             <FlatList
+    //                 data={episodes}
+    //                 renderItem={({ item }) => {
+    //                     return (
+                            
+    //                         <Text>{ item.title }</Text>
+    //                         // <Text>{ item.pubDate }</Text>
+    //                     )
+    //                 }} 
+    //             />
+    //         </View>
+    //     )
+    // }
 
     render() {
         
@@ -15,12 +59,25 @@ class PodcastShowScreen extends Component {
             <Image
                 style={{width: 50, height: 50}}
                 source={{uri: this.props.image_small}}
-            />    
-            {/* <Text>{this.props.rss.collection_name}</Text> */}
+            /> 
+            <Text>{this.props.podcastData.artist_name}</Text>
+            <Text>{this.state.podcastDescription}</Text>
+            <View>
+                <FlatList
+                    data={this.state.podcastEpisodes}
+                    renderItem={({ item }) => {
+                        return (
+                            
+                            <Text>{ item.title }</Text>
+                            // <Text>{ item.pubDate }</Text>
+                        )
+                    }} 
+                />
+            </View>
+            
             <Button 
                 title="Go to episdoe"
                 onPress={() => this.props.navigation.navigate('PodcastEpisode')}
-                
             />
         </View>
         )
