@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler';
+import { setEpisodeData } from '../action' 
 
 
 
@@ -34,23 +35,6 @@ class PodcastShowScreen extends Component {
         })
     }
 
-    // renderEpisodesInfo = (episodes) => {
-    //     return (
-    //         <View>
-    //             <FlatList
-    //                 data={episodes}
-    //                 renderItem={({ item }) => {
-    //                     return (
-                            
-    //                         <Text>{ item.title }</Text>
-    //                         // <Text>{ item.pubDate }</Text>
-    //                     )
-    //                 }} 
-    //             />
-    //         </View>
-    //     )
-    // }
-
     render() {
         
         return (
@@ -67,9 +51,15 @@ class PodcastShowScreen extends Component {
                     data={this.state.podcastEpisodes}
                     renderItem={({ item }) => {
                         return (
-                            
-                            <Text>{ item.title }</Text>
-                            // <Text>{ item.pubDate }</Text>
+                            <TouchableOpacity 
+                                onPress={() => {
+                                    this.props.setEpisodeData(item)
+                                    this.props.navigation.navigate('PodcastEpisode')
+                                }}
+                            >
+                                <Text>{ item.title }</Text>
+                                <Text>{ item.pubDate }</Text>
+                            </TouchableOpacity>
                         )
                     }} 
                 />
@@ -99,5 +89,4 @@ const styles = StyleSheet.create({
     },
 });
   
-
-  export default connect(mapStateToProps)(PodcastShowScreen)
+export default connect(mapStateToProps, { setEpisodeData })(PodcastShowScreen)

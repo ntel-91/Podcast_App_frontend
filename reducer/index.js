@@ -9,6 +9,8 @@ const defaultState = {
         return {...prevState, user_podcasts: action.payload}
       case "SET_PODCAST_DATA":
         return {...prevState, podcastData: action.payload}
+        case "SET_EPISODE_DATA":
+          return {...prevState, episodeData: action.payload}  
       // case "RESET":
       //   return defaultState
       default:

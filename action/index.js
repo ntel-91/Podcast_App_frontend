@@ -6,7 +6,7 @@ export function setPodcastData(podcastData){
     return {type: "SET_PODCAST_DATA", payload: podcastData}
 }
 
-export function handleChange(text){
-    return {type: "HANDLE_CHANGE", payload: text}
+export function setEpisodeData(episodeData){
+    return {type: "SET_EPISODE_DATA", payload: episodeData}
 }
 
