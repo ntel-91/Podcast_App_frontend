@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-n
 
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler';
-import { setEpisodeData } from '../action' 
+import { setEpisodeData } from '../action'
 
 
 
@@ -15,7 +15,6 @@ class PodcastShowScreen extends Component {
     }
     
     componentDidMount(){
-        console.log("RSS in global state: ", this.props.podcastData)
         fetch('http://localhost:3000/podcastdata',{
             method: "POST",
             headers: {

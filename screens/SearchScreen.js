@@ -13,7 +13,7 @@ class SearchScreen extends Component {
         podcast: '',
         podcastsArray: []
     }
-
+ 
     handleChange = (text) => {
         this.setState({
             term: text,
