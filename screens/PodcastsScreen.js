@@ -7,15 +7,21 @@ class PodcastsScreen extends Component {
     render() {
         return (
         <View  style={styles.container}>
-            <Text>Podcasts Screen</Text>
+            <Text>Podcasts Screen</Text> 
             <FlatList 
                 data={this.props.user_podcasts}
+                keyExtractor={item => item.podcast_name}
                 renderItem={({ item }) => {
                     return (
                         <View>
                             <TouchableOpacity 
                                 onPress={() => {
-                                    this.props.setPodcastData(item)
+                                    this.props.setPodcastData({
+                                        collection_name: item.podcast_name,
+                                        image_medium: item.img_url,
+                                        rss: item.rss
+                                        
+                                    })
                                     this.props.navigation.navigate('PodcastShow')
                                 }}>
                                 <Text>{item.podcast_name}</Text>

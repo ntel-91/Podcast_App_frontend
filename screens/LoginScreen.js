@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native'
-import { setUserPodcasts } from '../action'
+import { setUser, setUserPodcasts } from '../action'
 import { connect } from 'react-redux'
 
 
@@ -30,7 +30,7 @@ class LoginScreen extends Component {
       user = data.find(function(user){
         return user.username === value.username
       })
-
+      this.props.setUser(user.id)
       this.props.setUserPodcasts(user.podcasts)
       this.props.navigation.navigate('MainTab')
     }) 
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
 });
 
 
-  export default connect(null, { setUserPodcasts })(LoginScreen)
+  export default connect(null, { setUser, setUserPodcasts })(LoginScreen)

@@ -1,21 +1,23 @@
 const defaultState = {
     rss: '',
-    user_podcasts: [
-      {
-        description: null,
-        id: 3,
-        img_url: "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/31/e2/0e/31e20e97-63a4-be59-5210-299e3dc903f7/mza_5431675134966086683.jpeg/100x100bb.jpg",
-        podcast_name: "Tim Ferriss: Bestselling Author, Human Guinea Pig",
-        rss: "https://rss.art19.com/tim-ferriss-show",
-      },
-     {
-        description: null,
-        id: 4,
-        img_url: "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/16/e6/31/16e631fe-d2cb-7ca0-f1b2-3bbc07b0c293/mza_1989164661815778920.jpeg/100x100bb.jpg",
-        podcast_name: "The Portal",
-        rss: "https://rss.art19.com/the-portal",
-      },
-    ],
+    user_id: 5,
+    user_podcasts: '',
+    // [
+    //   {
+    //     description: null,
+    //     id: 3,
+    //     img_url: "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/31/e2/0e/31e20e97-63a4-be59-5210-299e3dc903f7/mza_5431675134966086683.jpeg/100x100bb.jpg",
+    //     podcast_name: "Tim Ferriss: Bestselling Author, Human Guinea Pig",
+    //     rss: "https://rss.art19.com/tim-ferriss-show",
+    //   },
+    //  {
+    //     description: null,
+    //     id: 4,
+    //     img_url: "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/16/e6/31/16e631fe-d2cb-7ca0-f1b2-3bbc07b0c293/mza_1989164661815778920.jpeg/100x100bb.jpg",
+    //     podcast_name: "The Portal",
+    //     rss: "https://rss.art19.com/the-portal",
+    //   },
+    // ],
     podcastData: '',
     episodeData: ''
 }
@@ -53,12 +55,14 @@ const defaultState = {
  
   function reducer(prevState = defaultState, action){
     switch(action.type){
+      case "SET_USER":
+        return {...prevState, user_id: action.payload}  
       case "SET_USER_PODCASTS":
         return {...prevState, user_podcasts: action.payload}
       case "SET_PODCAST_DATA":
         return {...prevState, podcastData: action.payload}
-        case "SET_EPISODE_DATA":
-          return {...prevState, episodeData: action.payload}  
+      case "SET_EPISODE_DATA":
+        return {...prevState, episodeData: action.payload}  
       // case "RESET":
       //   return defaultState
       default:

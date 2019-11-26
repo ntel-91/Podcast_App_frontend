@@ -149,7 +149,7 @@ class PodcastEpisodeScreen extends Component {
         ) : null
       }
       render() {
-          
+        console.log(this.props.episodeData)
         return (
           <View style={styles.container}>
             <Image

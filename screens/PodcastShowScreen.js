@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-n
 
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler';
-import { setEpisodeData } from '../action'
+import { setEpisodeData, setUserPodcasts } from '../action'
 
 
 
@@ -35,15 +35,56 @@ class PodcastShowScreen extends Component {
     }
 
     subscribe = () => {
-
+        fetch('http://localhost:3000/podcasts',{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json'  
+            },
+            body: JSON.stringify({
+                user_id: this.props.user_id,
+                podcast_name: this.props.podcastData.collection_name,
+                podcast_image: this.props.podcastData.image_medium,
+                rss: this.props.podcastData.rss
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            this.props.setUserPodcasts(data.podcasts)
+        })
     }
 
-    unsubscribe = () => {
-        
+    unsubscribe = (podcast_name) => {
+        id = this.subscribedPodcastId(podcast_name).id
+
+        fetch(`http://localhost:3000/podcasts/${id}`,{
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json'  
+            },
+            body: JSON.stringify({
+                user_id: this.props.user_id,
+                podcast_name: this.props.podcastData.collection_name,
+                podcast_image: this.props.podcastData.image_medium,
+                rss: this.props.podcastData.rss
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            this.props.setUserPodcasts(data.podcasts)
+        })
     }
+
+    subscribedPodcastId = (podcast_name) => {
+        return this.props.user_podcasts.find((p) => {
+            return p.podcast_name === podcast_name
+        })
+    } 
+    
 
     render() {
-        // console.log("PODCAST: ", this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.podcast_name))
+        
         return (
         <View  style={styles.container}>
             <Text>PodcastShow Screen</Text>
@@ -53,20 +94,21 @@ class PodcastShowScreen extends Component {
             /> 
             <Text>{this.props.podcastData.artist_name}</Text>
             <Text>{this.state.podcastDescription}</Text>
-            {this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.podcast_name) ? (
-                  <TouchableOpacity onPress={this.unsubscribe}>
-                      <Text>Subscribed</Text></TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={this.subscribe}>>
-                        <Text>Unsubscribed</Text>
-                    </TouchableOpacity>
-                )}
+            {this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.collection_name) ? (
+                  <TouchableOpacity onPress={()=> this.unsubscribe(this.props.podcastData.collection_name)}>
+                      <Text>Unsubscribe</Text></TouchableOpacity>
+                ) : ( 
+                    <TouchableOpacity onPress={this.subscribe}>
+                        <Text>Subscribe</Text>
+                    </TouchableOpacity> 
+                )} 
             <View>
                 <FlatList
                     data={this.state.podcastEpisodes}
+                    keyExtractor={item => item.audio } 
                     renderItem={({ item }) => {
-                        return (
-                            <TouchableOpacity 
+                        return ( 
+                            <TouchableOpacity
                                 onPress={() => {
                                     this.props.setEpisodeData(item)
                                     this.props.navigation.navigate('PodcastEpisode')
@@ -91,6 +133,7 @@ class PodcastShowScreen extends Component {
 
 mapStateToProps = (state) => {
     return {
+        user_id: state.user_id,
         user_podcasts: state.user_podcasts,
         podcastData: state.podcastData
     }
@@ -105,4 +148,4 @@ const styles = StyleSheet.create({
     },
 });
   
-export default connect(mapStateToProps, { setEpisodeData })(PodcastShowScreen)
+export default connect(mapStateToProps, { setEpisodeData, setUserPodcasts })(PodcastShowScreen)

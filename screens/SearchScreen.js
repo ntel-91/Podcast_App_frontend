@@ -65,8 +65,8 @@ class SearchScreen extends Component {
                 </TouchableOpacity>
 
                 <FlatList
-                    // keyExtractor=
                     data={this.state.podcastsArray}
+                    keyExtractor={item => item.rss }
                     renderItem={({ item }) => {
                         return (
                             <View>
@@ -78,7 +78,6 @@ class SearchScreen extends Component {
                                     <Text>{item.collection_name}</Text>
                                     <Image
                                         style={{width: 50, height: 50}}
-                                        // source={item.image}
                                         source={{uri: item.image_small}}
                                     />    
                                 </TouchableOpacity>
