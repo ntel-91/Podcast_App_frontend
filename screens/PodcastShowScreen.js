@@ -34,8 +34,16 @@ class PodcastShowScreen extends Component {
         })
     }
 
-    render() {
+    subscribe = () => {
+
+    }
+
+    unsubscribe = () => {
         
+    }
+
+    render() {
+        // console.log("PODCAST: ", this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.podcast_name))
         return (
         <View  style={styles.container}>
             <Text>PodcastShow Screen</Text>
@@ -45,6 +53,14 @@ class PodcastShowScreen extends Component {
             /> 
             <Text>{this.props.podcastData.artist_name}</Text>
             <Text>{this.state.podcastDescription}</Text>
+            {this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.podcast_name) ? (
+                  <TouchableOpacity onPress={this.unsubscribe}>
+                      <Text>Subscribed</Text></TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={this.subscribe}>>
+                        <Text>Unsubscribed</Text>
+                    </TouchableOpacity>
+                )}
             <View>
                 <FlatList
                     data={this.state.podcastEpisodes}
@@ -75,6 +91,7 @@ class PodcastShowScreen extends Component {
 
 mapStateToProps = (state) => {
     return {
+        user_podcasts: state.user_podcasts,
         podcastData: state.podcastData
     }
 }

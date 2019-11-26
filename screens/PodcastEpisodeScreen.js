@@ -131,7 +131,7 @@ class PodcastEpisodeScreen extends Component {
           })
           this.loadAudio()
         }
-      }
+      } 
       renderFileInfo() {
         const { playbackInstance, currentIndex } = this.state
         return playbackInstance ? (

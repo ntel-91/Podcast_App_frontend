@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux'
+import { setPodcastData } from '../action'
 
 class PodcastsScreen extends Component {
     render() {
@@ -12,7 +13,11 @@ class PodcastsScreen extends Component {
                 renderItem={({ item }) => {
                     return (
                         <View>
-                            <TouchableOpacity onPress={() => {this.props.navigation.navigate('PodcastShow')}}>
+                            <TouchableOpacity 
+                                onPress={() => {
+                                    this.props.setPodcastData(item)
+                                    this.props.navigation.navigate('PodcastShow')
+                                }}>
                                 <Text>{item.podcast_name}</Text>
                                 <Image
                                     style={{width: 50, height: 50}}
@@ -43,4 +48,4 @@ const styles = StyleSheet.create({
     },
 });
   
-export default connect(mapStateToProps)(PodcastsScreen)
+export default connect(mapStateToProps, { setPodcastData })(PodcastsScreen)

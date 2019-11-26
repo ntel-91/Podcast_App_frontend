@@ -50,7 +50,7 @@ class LoginScreen extends Component {
             onPress={this.handleSubmit}
           />
           <Text>Login Screen</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('MainTab')}> 
+          <TouchableOpacity onPress={this.handleSubmit}> 
               <Text>Submit</Text>
           </TouchableOpacity>
       </View>
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
 });
-  
+
 
   export default connect(null, { setUserPodcasts })(LoginScreen)
