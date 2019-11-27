@@ -3,38 +3,36 @@ import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, Image } fro
 import { connect } from 'react-redux'
 import { setPodcastData } from '../action'
 
-class PodcastsScreen extends Component {
+class PodcastsScreen extends Component {  
     render() {
         return (
-        <View  style={styles.container}>
-            <Text>Podcasts Screen</Text> 
-            <FlatList 
+        <View>
+            <FlatList          
                 data={this.props.user_podcasts}
-                keyExtractor={item => item.podcast_name}
                 renderItem={({ item }) => {
                     return (
-                        <View>
                             <TouchableOpacity 
+                                style={{width: '33.33%', aspectRatio: 1}}
                                 onPress={() => {
                                     this.props.setPodcastData({
                                         collection_name: item.podcast_name,
                                         image_medium: item.img_url,
-                                        rss: item.rss
-                                        
+                                        rss: item.rss      
                                     })
                                     this.props.navigation.navigate('PodcastShow')
                                 }}>
-                                <Text>{item.podcast_name}</Text>
                                 <Image
-                                    style={{width: 50, height: 50}}
+                                    style={{flex: 1}}
                                     source={{uri: item.img_url}}
                                 />    
                             </TouchableOpacity>
-                        </View>
                     )
                 }}
+                keyExtractor={item => item.podcast_name}
+                numColumns={3}
             />
         </View>
+        
         )
     }
 }
@@ -47,11 +45,16 @@ mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1,
+        
+        // flexWrap: 'wrap',
+        flexDirection: 'row'
     },
+    image: {
+        flex: 1,
+        flexDirection: 'row'
+    }
 });
   
 export default connect(mapStateToProps, { setPodcastData })(PodcastsScreen)
