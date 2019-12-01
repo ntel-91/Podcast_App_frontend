@@ -48,11 +48,7 @@ class LoginScreen extends Component {
           <Button
             title="Submit"
             onPress={this.handleSubmit}
-          />
-          <Text>Login Screen</Text>
-          <TouchableOpacity onPress={this.handleSubmit}> 
-              <Text>Submit</Text>
-          </TouchableOpacity>
+          />  
       </View>
     )
   }
