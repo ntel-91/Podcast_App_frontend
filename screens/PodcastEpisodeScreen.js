@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { Audio } from 'expo-av'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import Slider from 'react-native-slider'
 const audioBookPlaylist = [
     {
       title: 'Hamlet - Act I',
@@ -50,13 +51,28 @@ const audioBookPlaylist = [
         'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
     }
   ]
+
+function msToTime(duration) {
+  let seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = hours === 0 ? "" : ((hours < 10) ? "0" + hours : hours);
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return (hours ? (hours + ":") : "") + minutes + ":" + seconds;
+}
+
 class PodcastEpisodeScreen extends Component {
     state = {
         isPlaying: false,
         playbackInstance: null,
         currentIndex: 0,
         volume: 1.0,
-        isBuffering: false
+        isBuffering: false,
+        position: 0,
+        duration: 0
       }
       async componentDidMount() {
         try {
@@ -94,44 +110,65 @@ class PodcastEpisodeScreen extends Component {
       }
       onPlaybackStatusUpdate = status => {
         this.setState({
-          isBuffering: status.isBuffering
+          isBuffering: status.isBuffering,
+          position: status.positionMillis,
+          duration: status.durationMillis
         })
       }
+      
       handlePlayPause = async () => {
         const { isPlaying, playbackInstance } = this.state
         isPlaying
           ? await playbackInstance.pauseAsync()
           : await playbackInstance.playAsync()
+          // : await playbackInstance.playFromPositionAsync(60000)
         this.setState({
           isPlaying: !isPlaying
         })
       }
+
       handlePreviousTrack = async () => {
         let { playbackInstance, currentIndex } = this.state
-        if (playbackInstance) {
-          await playbackInstance.unloadAsync()
-          currentIndex < audioBookPlaylist.length - 1
-            ? (currentIndex -= 1)
-            : (currentIndex = 0)
-          this.setState({
-            currentIndex
-          })
-          this.loadAudio()
-        }
+          if (this.state.position > 30000) {
+            await playbackInstance.playFromPositionAsync(this.state.position - 30000)
+            // currentIndex < audioBookPlaylist.length - 1
+            //   ? (currentIndex -= 1)
+            //   : (currentIndex = 0)
+            // this.setState({
+            //   currentIndex
+            // })
+            // this.loadAudio()
+          } else {
+            await playbackInstance.playFromPositionAsync(0)
+          }
       }
+
       handleNextTrack = async () => {
         let { playbackInstance, currentIndex } = this.state
-        if (playbackInstance) {
-          await playbackInstance.unloadAsync()
-          currentIndex < audioBookPlaylist.length - 1
-            ? (currentIndex += 1)
-            : (currentIndex = 0)
-          this.setState({
-            currentIndex
-          })
-          this.loadAudio()
+          if (playbackInstance) {
+            await playbackInstance.playFromPositionAsync(this.state.position + 30000)
+          //   currentIndex < audioBookPlaylist.length - 1
+          //     ? (currentIndex += 1)
+          //     : (currentIndex = 0)
+          //   this.setState({
+          //     currentIndex
+          //   })
+          //   this.loadAudio()
+          }
+      } 
+
+      bookmark = () => {
+        // console.log(this.state.position)
+        this.state.playbackInstance.playFromPositionAsync(60000)
+      }
+    
+      sliderValue = () => {
+        if (this.state.duration){
+          return this.state.position / this.state.duration
         }
       } 
+    
+
       renderFileInfo() {
         const { playbackInstance, currentIndex } = this.state
         return playbackInstance ? (
@@ -160,7 +197,7 @@ class PodcastEpisodeScreen extends Component {
             />
             <View style={styles.controls}>
               <TouchableOpacity style={styles.control} onPress={this.handlePreviousTrack}>
-                <Ionicons name='ios-skip-backward' size={48} color='#444' />
+                <MaterialIcons name='replay-30' size={48} color='#444' />
               </TouchableOpacity>
               <TouchableOpacity style={styles.control} onPress={this.handlePlayPause}>
                 {this.state.isPlaying ? (
@@ -170,10 +207,26 @@ class PodcastEpisodeScreen extends Component {
                 )}
               </TouchableOpacity>
               <TouchableOpacity style={styles.control} onPress={this.handleNextTrack}>
-                <Ionicons name='ios-skip-forward' size={48} color='#444' />
+                <MaterialIcons name='forward-30' size={48} color='#444' />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.control} onPress={this.bookmark}>
+                <Ionicons name='ios-bookmark' size={48} color='#444' />
               </TouchableOpacity>
             </View>
-              {this.renderFileInfo()}
+            <Slider 
+              value={this.sliderValue()}
+              minimumValue={0}
+              maximumValue={1}
+              style={styles.slider}
+              thumbStyle={styles.thumb}
+            />
+
+            <View style={styles.time}>
+              <Text>{msToTime(this.state.position)}</Text>
+              <Text>{msToTime(this.state.duration)}</Text>
+            </View>
+
+            {this.renderFileInfo()}
     </View>
         )
       }
@@ -191,6 +244,16 @@ class PodcastEpisodeScreen extends Component {
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
+      },
+      slider: {
+        width: 250,
+        height: 40
+      },
+      time: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 300,
+        height: 20
       },
       albumCover: {
         width: 250,
@@ -216,6 +279,10 @@ class PodcastEpisodeScreen extends Component {
       },
       controls: {
         flexDirection: 'row'
+      },
+      thumb: {
+        width: 10,
+        height: 10
       }
     })
 
