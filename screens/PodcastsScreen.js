@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux'
 import { setPodcastData } from '../action'
 
 class PodcastsScreen extends Component {  
     render() {
+        
         return (
         <View>
             <FlatList          
@@ -15,8 +16,8 @@ class PodcastsScreen extends Component {
                                 style={{width: '33.33%', aspectRatio: 1}}
                                 onPress={() => {
                                     this.props.setPodcastData({
-                                        collection_name: item.podcast_name,
-                                        image_medium: item.img_url,
+                                        collectionName: item.podcast_name,
+                                        img_url: item.img_url,
                                         rss: item.rss      
                                     })
                                     this.props.navigation.navigate('PodcastShow')

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native'
-import { setUser, setUserPodcasts } from '../action'
+import { setUser, setUserPodcasts, setUserBookmarks, setUserEpisodes } from '../action'
 import { connect } from 'react-redux'
 
 
@@ -22,19 +22,28 @@ const options = {
 
 class LoginScreen extends Component {
 
-  handleSubmit = () => {
-    const value = this._form.getValue()
-    fetch('http://localhost:3000/users')
-    .then(res => res.json())
-    .then(data => {
-      user = data.find(function(user){
-        return user.username === value.username
-      })
-      this.props.setUser(user.id)
-      this.props.setUserPodcasts(user.podcasts)
-      this.props.navigation.navigate('MainTab')
-    }) 
-  }
+    handleSubmit = () => {
+        const value = this._form.getValue()
+
+        fetch('http://localhost:3000/login',{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json'  
+            },
+            body: JSON.stringify({
+                username: value.username
+            })
+        })
+        .then(res => res.json())
+        .then(user => {
+            this.props.setUser(user.userId)
+            this.props.setUserPodcasts(user.podcasts)
+            this.props.setUserEpisodes(user.episodes)
+            this.props.setUserBookmarks(user.bookmarks)
+            this.props.navigation.navigate('MainTab')
+        })
+    }
   
 
   render() {
@@ -64,4 +73,4 @@ const styles = StyleSheet.create({
 });
 
 
-  export default connect(null, { setUser, setUserPodcasts })(LoginScreen)
+export default connect(null, { setUser, setUserPodcasts, setUserBookmarks, setUserEpisodes })(LoginScreen)
