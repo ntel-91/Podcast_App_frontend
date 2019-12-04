@@ -8,7 +8,7 @@ class Bookmark extends Component {
     render() {
         
         return (
-            <View style={{borderBottomWidth: 0.5, borderColor: 'lightgrey'}}>
+            <View style={{borderBottomWidth: 0.5, borderTopWidth: 0.5, borderColor: 'lightgrey'}}>
                 <View style={styles.card}>
                     <View style={styles.headerContentStyle}>
                         <Text style={styles.headerTextStyle}>{`Time: ${this.props.time}`}</Text>
@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     headerTextStyle: {
-        fontSize: 15,
+        fontSize: 16,
         marginLeft: 10
     },
     subHeaderTextStyle: {
         color: 'grey',
         fontSize: 13,
-        marginLeft: 10
+        marginLeft: 15
     },
     thumbnailContainerStyle: {
         justifyContent: 'center',

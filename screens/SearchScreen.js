@@ -5,6 +5,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { setPodcastData } from '../action'
 import { connect } from 'react-redux'
 import SearchItem from '../components/SearchItem.js'
+import { Feather } from '@expo/vector-icons';
 
 
 class SearchScreen extends Component {
@@ -38,7 +39,7 @@ class SearchScreen extends Component {
 
     submit = (searchTerm) => {
         
-        let URL = `https://itunes.apple.com/search?term=${searchTerm}&media=podcast&limit=20`
+        let URL = `https://itunes.apple.com/search?term=${searchTerm}&media=podcast&limit=30`
         fetch(URL)
         .then(res => res.json())
         .then(data => {
@@ -59,21 +60,32 @@ class SearchScreen extends Component {
   
     render() {
         return (
-            <View > 
-                <SearchBar 
-                    // term={term}
-                    // onTermSubmit={this.testFetchFunction}
-                />
+            <View >
+                {/* <SearchBar 
+                    term={this.state.term}
+                    onTermSubmit={
+                        this.submit
+                    }
+                /> */}
 
-                <TextInput 
+                <View style={styles.background}>
+                <Feather name="search" size={30} style={styles.iconStyle}/>
+                <TextInput
                     defaultValue={this.state.term}
                     onChangeText={this.handleChange}
                     placeholder="Search"
-                />
 
-                <TouchableOpacity onPress={() => this.submit(this.state.term)}>
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    style={styles.inputStyle}
+                    onEndEditing={() => this.submit(this.state.term)}
+                />
+                </View>
+                
+                {/* <TouchableOpacity onPress={() => this.submit(this.state.term)}>
                     <Text>Submit</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+
 
                 <View>
                     <FlatList
@@ -95,6 +107,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    background: {
+        marginTop: 15,
+        backgroundColor: '#f0EEEE',
+        height: 50,
+        borderRadius: 10,
+        marginHorizontal: 15,
+        flexDirection: 'row'
+    },
+    inputStyle: {
+        flex: 1,
+        fontSize: 18
+    },
+    iconStyle: {
+        fontSize: 35,
+        alignSelf: 'center',
+        marginHorizontal: 15
+    }
 });
   
 

@@ -25,7 +25,7 @@ class EpisodeBookmarksScreen extends Component {
     }
 
     render() {
-        // console.log("PODCAST BOOKMARKS: ", this.props.podcast_bookmarks)
+        
         return (
             <View>
                 <FlatList

@@ -90,7 +90,7 @@ class PodcastEpisodeScreen extends Component {
         })
         this.loadAudio()
         } catch (e) {
-        console.log(e)
+        // console.log(e)
         }
         
         fetch('http://localhost:3000/episodebookmarks',{
@@ -107,7 +107,7 @@ class PodcastEpisodeScreen extends Component {
         })    
         .then(res => res.json())
         .then(bookmarks => {
-            console.log(bookmarks)
+            
             this.props.currentEpisodeBookmarks(bookmarks)
         })
 
@@ -128,7 +128,7 @@ class PodcastEpisodeScreen extends Component {
         await playbackInstance.loadAsync(source, status, false)
         this.setState({playbackInstance})
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
 
@@ -168,10 +168,6 @@ class PodcastEpisodeScreen extends Component {
     } 
 
     bookmark = () => {
-        // console.log("POSITION", this.state.position)
-        // console.log("EPISODE", this.props.episodeData.episode_name)
-        // console.log("USER", this.props.user_id)
-        // console.log("PODCASTID", this.props.episode_bookmarks)
         fetch('http://localhost:3000/bookmarks',{
             method: 'POST',
             headers: {
@@ -271,20 +267,23 @@ class PodcastEpisodeScreen extends Component {
             />
 
             <View style={styles.time}>
-            <Text>{msToTime(this.state.position)}</Text>
-            <Text>{msToTime(this.state.duration)}</Text>
+                <Text>{this.state.duration ? msToTime(this.state.position) : ""}</Text>
+                <Text>{this.state.duration ? msToTime(this.state.duration) : ""}</Text>
             </View>
 
             {this.renderFileInfo()}
-            <View>
-                <Text>Bookmarks:</Text>
-            </View>
-            <View style={{flex: 1}}>
-                <FlatList 
-                    data={this.props.episode_bookmarks}
-                    keyExtractor={item => item.created_at } 
-                    renderItem={this.renderBookmarks}
-                />
+
+            <View style={styles.bookmarks}>
+                <View style={{borderBottomWidth: 0.5, borderColor: 'lightgrey'}}>
+                    <Text style={styles.bookmarkHeader}>{`Bookmarks: (${this.props.episode_bookmarks.length})`}</Text>
+                </View>
+                <View style={{flex: 1}}>
+                    <FlatList 
+                        data={this.props.episode_bookmarks}
+                        keyExtractor={item => item.created_at } 
+                        renderItem={this.renderBookmarks}
+                    />
+                </View>
             </View>
         </View>
         )
@@ -330,7 +329,7 @@ class PodcastEpisodeScreen extends Component {
     trackInfoText: {
         textAlign: 'center',
         flexWrap: 'wrap',
-        color: '#550088'
+        color: 'black'
     },
     largeText: {
         fontSize: 22
@@ -347,6 +346,17 @@ class PodcastEpisodeScreen extends Component {
     thumb: {
         width: 10,
         height: 10
+    },
+    bookmarks: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignSelf: 'stretch'
+        
+    },
+    bookmarkHeader: {
+        fontSize: 16,
+        marginLeft: 10,
+        marginBottom: 10
     }
     })
 

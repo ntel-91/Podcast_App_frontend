@@ -102,16 +102,16 @@ class PodcastShowScreen extends Component {
                     source={{uri: this.props.podcastData.img_url}}
                 />
             </View>
-            <View>
-                <Text>{this.props.podcastData.artistName}</Text>
-                <Text>{this.state.podcastDescription}</Text>
+            <View style={styles.podcastDetail}>
+                <Text style={{fontSize: 16}}>{this.props.podcastData.collectionName}</Text>
+                <Text style={{marginTop: 5}}>{this.state.podcastDescription}</Text>
                 {this.props.user_podcasts.find((p) => p.podcast_name === this.props.podcastData.collectionName) ? (
                     <TouchableOpacity onPress={()=> this.unsubscribe(this.props.podcastData.collectionName)}>
-                        <Text>Unsubscribe</Text>
+                        <Text style={{marginTop: 10, fontWeight: 'bold'}}>Unsubscribe</Text>
                     </TouchableOpacity>
                 ) : ( 
                     <TouchableOpacity onPress={this.subscribe}>
-                        <Text>Subscribe</Text>
+                        <Text style={{marginTop: 10, fontWeight: 'bold'}}>Subscribe</Text>
                     </TouchableOpacity> 
                 )}
             </View>
@@ -152,6 +152,11 @@ const styles = StyleSheet.create({
     },
     episodesBox: {
         flex: 4
+    },
+    podcastDetail: {
+        // marginLeft: 10,
+        // marginRight: 10,
+        margin: 10
     }
 });
 

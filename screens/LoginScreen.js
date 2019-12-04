@@ -16,6 +16,10 @@ const options = {
   fields:{
     username: {
       autoCapitalize: 'none'
+    },
+    password: {
+      autoCapitalize: 'none'
+      
     }
   }
 }

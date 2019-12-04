@@ -147,4 +147,3 @@ let episode = userEpisodes.forEach(p => {
   })
 })
 
-console.log(episode)

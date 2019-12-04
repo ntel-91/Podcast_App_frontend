@@ -9,7 +9,7 @@ class BookmarkScreen extends Component {
     
     renderItems = (podcast) => {
         let podcastItem = this.props.user_podcasts.find( p => p.id === parseInt(Object.keys(podcast.item)[0]))
-        // console.log(podcastItem)
+        
         return (
             <TouchableOpacity
                 onPress={() => {
