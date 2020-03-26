@@ -6,53 +6,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Slider from 'react-native-slider'
 import Bookmark from '../components/Bookmark.js'
 import { currentEpisodeBookmarks, setUserEpisodes, setUserBookmarks } from '../action'
-const audioBookPlaylist = [
-    {
-      title: 'Hamlet - Act I',
-      author: 'William Shakespeare',
-      source: 'Librivox',
-      uri:
-        'https://ia800204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act1_shakespeare.mp3',
-      imageSource:
-        'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
-    },
-    {
-      title: 'Hamlet - Act II',
-      author: 'William Shakespeare',
-      source: 'Librivox',
-      uri:
-        'https://ia600204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act2_shakespeare.mp3',
-      imageSource:
-        'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
-    },
-    {
-      title: 'Hamlet - Act III',
-      author: 'William Shakespeare',
-      source: 'Librivox',
-      uri:
-        'http://www.archive.org/download/hamlet_0911_librivox/hamlet_act3_shakespeare.mp3',
-      imageSource:
-        'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
-    },
-    {
-      title: 'Hamlet - Act IV',
-      author: 'William Shakespeare',
-      source: 'Librivox',
-      uri:
-        'https://ia800204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act4_shakespeare.mp3',
-      imageSource:
-        'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
-    },
-    {
-      title: 'Hamlet - Act V',
-      author: 'William Shakespeare',
-      source: 'Librivox',
-      uri:
-        'https://ia600204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act5_shakespeare.mp3',
-      imageSource:
-        'http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg'
-    }
-  ]
+
 
 function msToTime(duration) {
     let seconds = Math.floor((duration / 1000) % 60),
@@ -90,7 +44,6 @@ class PodcastEpisodeScreen extends Component {
         })
         this.loadAudio()
         } catch (e) {
-        // console.log(e)
         }
         
         fetch('http://localhost:3000/episodebookmarks',{
@@ -106,8 +59,7 @@ class PodcastEpisodeScreen extends Component {
             })
         })    
         .then(res => res.json())
-        .then(bookmarks => {
-            
+        .then(bookmarks => { 
             this.props.currentEpisodeBookmarks(bookmarks)
         })
 
@@ -128,7 +80,6 @@ class PodcastEpisodeScreen extends Component {
         await playbackInstance.loadAsync(source, status, false)
         this.setState({playbackInstance})
         } catch (e) {
-            // console.log(e)
         }
     }
 
@@ -144,7 +95,6 @@ class PodcastEpisodeScreen extends Component {
         const { isPlaying, playbackInstance } = this.state
         isPlaying
         ? await playbackInstance.pauseAsync()
-        // : await playbackInstance.playAsync()
         : await playbackInstance.playFromPositionAsync(this.state.position)
         this.setState({
             isPlaying: !isPlaying
@@ -188,7 +138,6 @@ class PodcastEpisodeScreen extends Component {
             this.props.currentEpisodeBookmarks(bookmarks.episode_bookmarks)
             this.props.setUserEpisodes(bookmarks.episodes)
             this.props.setUserBookmarks(bookmarks.bookmarks)
-            // this.props.currentEpisodeBookmarks(bookmarks)
         })
     }
     

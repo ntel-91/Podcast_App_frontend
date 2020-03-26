@@ -11,7 +11,6 @@ class Episode extends Component {
                     
                     <View style={styles.headerContentStyle}>
                         <Text style={styles.headerTextStyle}>{this.props.episodes.episode_name}</Text>
-                        {/* <Text style={styles.subHeaderTextStyle}>{this.props.podcast.artistName}</Text> */}
                     </View>
                 </View>
             </View>
