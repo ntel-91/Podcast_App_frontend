@@ -5,20 +5,8 @@ import { Audio } from 'expo-av'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Slider from 'react-native-slider'
 import Bookmark from '../components/Bookmark.js'
+import { msToTime } from '../helper.js'
 import { currentEpisodeBookmarks, setUserEpisodes, setUserBookmarks } from '../action'
-
-
-function msToTime(duration) {
-    let seconds = Math.floor((duration / 1000) % 60),
-        minutes = Math.floor((duration / (1000 * 60)) % 60),
-        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-    hours = hours === 0 ? "" : ((hours < 10) ? "0" + hours : hours);
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-    return (hours ? (hours + ":") : "") + minutes + ":" + seconds;
-}
 
 class PodcastEpisodeScreen extends Component {
     state = {
