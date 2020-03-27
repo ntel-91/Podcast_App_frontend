@@ -180,7 +180,6 @@ class PodcastEpisodeScreen extends Component {
     }
       
     render() {
-        // console.log(this.props.episode_bookmarks)
         return (
         <View style={styles.container}>
             <Image
