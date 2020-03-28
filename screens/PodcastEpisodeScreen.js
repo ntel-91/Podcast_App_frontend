@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Audio } from 'expo-av'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import Slider from 'react-native-slider'
+import BookmarkList from '../components/BookmarkList.js'
 import Bookmark from '../components/Bookmark.js'
 import { msToTime } from '../helper.js'
 import { currentEpisodeBookmarks, setUserEpisodes, setUserBookmarks } from '../action'
@@ -103,7 +104,7 @@ class PodcastEpisodeScreen extends Component {
         if (playbackInstance) {
             await playbackInstance.playFromPositionAsync(this.state.position + 30000)
         }
-    } 
+    }
 
     bookmark = () => {
         fetch('http://localhost:3000/bookmarks',{
@@ -121,20 +122,16 @@ class PodcastEpisodeScreen extends Component {
         })    
         .then(res => res.json())
         .then(bookmarks => {
-            
-            
             this.props.currentEpisodeBookmarks(bookmarks.episode_bookmarks)
             this.props.setUserEpisodes(bookmarks.episodes)
             this.props.setUserBookmarks(bookmarks.bookmarks)
         })
-    }
-    
+    }    
     sliderValue = () => {
         if (this.state.duration){
         return this.state.position / this.state.duration
         }
-    } 
-    
+    }
 
     renderFileInfo = () => {
         const { playbackInstance, currentIndex } = this.state
@@ -147,26 +144,13 @@ class PodcastEpisodeScreen extends Component {
         ) : null
     }
 
-    renderBookmarks = (bookmark) => {
-        
-        return (
-            <TouchableOpacity
-                onPress={() => {
-                    this.setState({
-                        
-                        isPlaying: false,
-                        position: bookmark.item.bookmark_time
-                    })}
-                }
-            >
-                <Bookmark
-                    time={msToTime(bookmark.item.bookmark_time)}
-                    bookmarkDate={bookmark.item.created_at}
-                />
-            </TouchableOpacity>
-        )
+    renderBookmarkPosition = (bookmark) => {
+        this.setState({ 
+            isPlaying: false,
+            position: bookmark.item.bookmark_time
+        })
     }
-      
+          
     render() {
         return (
         <View style={styles.container}>
@@ -209,18 +193,11 @@ class PodcastEpisodeScreen extends Component {
 
             {this.renderFileInfo()}
 
-            <View style={styles.bookmarks}>
-                <View style={{borderBottomWidth: 0.5, borderColor: 'lightgrey'}}>
-                    <Text style={styles.bookmarkHeader}>{`Bookmarks: (${this.props.episode_bookmarks.length})`}</Text>
-                </View>
-                <View style={{flex: 1}}>
-                    <FlatList 
-                        data={this.props.episode_bookmarks}
-                        keyExtractor={item => item.created_at } 
-                        renderItem={this.renderBookmarks}
-                    />
-                </View>
-            </View>
+            <BookmarkList 
+                renderBookmarkPosition={this.renderBookmarkPosition}
+                bookmarksList={this.props.episode_bookmarks}
+            />
+
         </View>
         )
     }
@@ -234,7 +211,6 @@ class PodcastEpisodeScreen extends Component {
             episode_bookmarks: state.episode_bookmarks,
             user_bookmarks: state.user_bookmarks,
             user_podcasts: state.user_podcasts
-
         }
     }
     const styles = StyleSheet.create({
@@ -282,20 +258,9 @@ class PodcastEpisodeScreen extends Component {
     thumb: {
         width: 10,
         height: 10
-    },
-    bookmarks: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignSelf: 'stretch'
-        
-    },
-    bookmarkHeader: {
-        fontSize: 16,
-        marginLeft: 10,
-        marginBottom: 10
     }
     })
 
-
-
 export default connect(mapStateToProps, { currentEpisodeBookmarks, setUserEpisodes, setUserBookmarks })(PodcastEpisodeScreen)
+
+// was over 300 lines

@@ -7,6 +7,6 @@ export default createAppContainer(
         Welcome: WelcomeNavigator,
         MainStack: MainStackNavigator
       },{
-        initialRouteName: 'MainStack'
+        initialRouteName: 'Welcome'
       })
 )
