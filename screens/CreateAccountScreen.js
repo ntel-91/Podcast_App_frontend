@@ -23,6 +23,5 @@ container: {
     justifyContent: 'center',
 },
 });
-  
 
   export default CreateAccount

@@ -1,3 +1,47 @@
+
+const defaultState = {
+    rss: '',
+    user_id: '',
+    user_podcasts: '',
+    podcastData: '',
+    episodeData: '',
+    user_episodes: '',
+    user_bookmarks: '',
+    podcast_bookmarks: '',
+    episode_bookmarks: ''
+}
+
+
+function reducer(prevState = defaultState, action){
+    switch(action.type){
+        case "SET_EPISODE_BOOKMARKS":
+            return {...prevState, episode_bookmarks: action.payload}
+        case "SET_PODCAST_BOOKMARKS":
+            return {...prevState, podcast_bookmarks: action.payload}
+        case "SET_USER":
+            return {...prevState, user_id: action.payload}
+        case "SET_USER_PODCASTS":
+            return {...prevState, user_podcasts: action.payload}
+        case "SET_PODCAST_DATA":
+            return {...prevState, podcastData: action.payload}
+        case "SET_EPISODE_DATA":
+            return {...prevState, episodeData: action.payload}
+        case "SET_USER_BOOKMARKS":
+            return {...prevState, user_bookmarks: action.payload}
+        case "SET_USER_EPISODES":
+            return {...prevState, user_episodes: action.payload}
+        default:
+            return prevState
+    }
+}
+  
+export default reducer
+
+
+
+
+// dummy data
+
 // USER ID
 id = 8
 
@@ -30,10 +74,11 @@ userPodcasts = [
       rss: "http://joeroganexp.joerogan.libsynpro.com/rss",
       updated_at: "2019-12-03T16:28:25.131Z",
     },
-  ]
+]
   
 // USER EPISODES
-  userEpisodes = [
+
+userEpisodes = [
     {
      "80":  [
         {
@@ -78,10 +123,10 @@ userPodcasts = [
        },
      ],
    },
- ]
+]
 
- // USER BOOKMARKS
- userBookmarks = [
+//  // USER BOOKMARKS
+userBookmarks = [
     {
      "5": [
         {
@@ -138,54 +183,4 @@ userPodcasts = [
        },
      ],
    },
- ]
- 
-
-
-
-const defaultState = {
-    // rss: '',
-    // user_id: '',
-    // user_podcasts: '',
-    // podcastData: '',
-    // episodeData: '',
-    // user_episodes: '',
-    // user_bookmarks: userBookmarks,
-    // podcast_bookmarks: '',
-    // episode_bookmarks: ''
-    rss: '',
-    user_id: id,
-    user_podcasts: userPodcasts,
-    podcastData: '',
-    episodeData: '',
-    user_episodes: userEpisodes,
-    user_bookmarks: userBookmarks,
-    podcast_bookmarks: '',
-    episode_bookmarks: ''
-}
-
-
-function reducer(prevState = defaultState, action){
-    switch(action.type){
-        case "SET_EPISODE_BOOKMARKS":
-            return {...prevState, episode_bookmarks: action.payload}
-        case "SET_PODCAST_BOOKMARKS":
-            return {...prevState, podcast_bookmarks: action.payload}
-        case "SET_USER":
-            return {...prevState, user_id: action.payload}
-        case "SET_USER_PODCASTS":
-            return {...prevState, user_podcasts: action.payload}
-        case "SET_PODCAST_DATA":
-            return {...prevState, podcastData: action.payload}
-        case "SET_EPISODE_DATA":
-            return {...prevState, episodeData: action.payload}
-        case "SET_USER_BOOKMARKS":
-            return {...prevState, user_bookmarks: action.payload}
-        case "SET_USER_EPISODES":
-            return {...prevState, user_episodes: action.payload}
-        default:
-            return prevState
-    }
-}
-  
-export default reducer
+]

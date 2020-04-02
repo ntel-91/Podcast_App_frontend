@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 class BookmarkedPodcastItem extends Component {
 
     render() {
-        
         return (
             <View style={{borderBottomWidth: 0.5, borderColor: 'lightgrey'}}>
                 <View style={styles.card}>

@@ -133,7 +133,7 @@ class PodcastEpisodeScreen extends Component {
         }
     }
 
-    renderFileInfo = () => {
+    renderEpisodeInfo = () => {
         const { playbackInstance, currentIndex } = this.state
         return playbackInstance ? (
         <View style={styles.trackInfo}>
@@ -154,12 +154,14 @@ class PodcastEpisodeScreen extends Component {
     render() {
         return (
         <View style={styles.container}>
+            
             <Image
             style={styles.albumCover}
             source={{
                 uri: this.props.podcastData.img_url
             }}
             />
+
             <View style={styles.controls}>
                 <TouchableOpacity style={styles.control} onPress={this.incrementRewind}>
                     <MaterialIcons name='replay-30' size={48} color='#444' />
@@ -178,6 +180,7 @@ class PodcastEpisodeScreen extends Component {
                     <Ionicons name='ios-bookmark' size={48} color='#444' />
                 </TouchableOpacity>
             </View>
+
             <Slider 
                 value={this.sliderValue()}
                 minimumValue={0}
@@ -191,7 +194,7 @@ class PodcastEpisodeScreen extends Component {
                 <Text>{this.state.duration ? msToTime(this.state.duration) : ""}</Text>
             </View>
 
-            {this.renderFileInfo()}
+            {this.renderEpisodeInfo()}
 
             <BookmarkList 
                 renderBookmarkPosition={this.renderBookmarkPosition}
@@ -263,4 +266,3 @@ class PodcastEpisodeScreen extends Component {
 
 export default connect(mapStateToProps, { currentEpisodeBookmarks, setUserEpisodes, setUserBookmarks })(PodcastEpisodeScreen)
 
-// was over 300 lines

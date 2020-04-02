@@ -7,38 +7,20 @@ import { connect } from 'react-redux'
 import SearchItem from '../components/SearchItem.js'
 import { Feather } from '@expo/vector-icons';
 
-
 class SearchScreen extends Component {
     
     state = {
         term: "",
-        podcast: '',
         podcastsArray: []
     }
  
     handleChange = (text) => {
         this.setState({
-            term: text,
-            podcast: '',
-            podcastsArray: [],
-            rss: ''
+            term: text
         })
     }
 
-    renderItems = (podcast) => {
-        return (
-            <TouchableOpacity 
-                onPress={() => {
-                    this.props.setPodcastData(podcast.item)
-                    this.props.navigation.navigate('PodcastShow')}}
-            >
-                <SearchItem podcast={podcast.item} />
-            </TouchableOpacity>
-        )
-    }
-
-    submit = (searchTerm) => {
-        
+    submit = (searchTerm) => {   
         let URL = `https://itunes.apple.com/search?term=${searchTerm}&media=podcast&limit=30`
         fetch(URL)
         .then(res => res.json())
@@ -57,36 +39,34 @@ class SearchScreen extends Component {
             })
         })
     }
-  
+
+    renderItems = (podcast) => {
+        return (
+            <TouchableOpacity 
+                onPress={() => {
+                    this.props.setPodcastData(podcast.item)
+                    this.props.navigation.navigate('PodcastShow')}}
+            >
+                <SearchItem podcast={podcast.item} />
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         return (
             <View >
-                {/* <SearchBar 
-                    term={this.state.term}
-                    onTermSubmit={
-                        this.submit
-                    }
-                /> */}
-
                 <View style={styles.background}>
                 <Feather name="search" size={30} style={styles.iconStyle}/>
                 <TextInput
                     defaultValue={this.state.term}
                     onChangeText={this.handleChange}
                     placeholder="Search"
-
                     autoCapitalize='none'
                     autoCorrect={false}
                     style={styles.inputStyle}
                     onEndEditing={() => this.submit(this.state.term)}
                 />
                 </View>
-                
-                {/* <TouchableOpacity onPress={() => this.submit(this.state.term)}>
-                    <Text>Submit</Text>
-                </TouchableOpacity> */}
-
-
                 <View>
                     <FlatList
                         data={this.state.podcastsArray}
@@ -126,5 +106,4 @@ const styles = StyleSheet.create({
     }
 });
   
-
 export default connect(null, { setPodcastData })(SearchScreen)

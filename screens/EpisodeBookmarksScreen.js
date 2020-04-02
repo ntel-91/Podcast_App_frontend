@@ -7,10 +7,12 @@ import { setEpisodeData, currentEpisodeBookmarks } from '../action'
 
 class EpisodeBookmarksScreen extends Component {
     
-    renderItems = (episode) => {     
+    renderItems = (episode) => {
+        // episodes from 'user_bookmarks' state that matches episode of argument
         let bookmarks = this.props.user_bookmarks.find(e => Object.keys(e)[0] === `${episode.item.id}`)
         let numBookmarks = Object.values(bookmarks).flat().length
         
+        // return list of episodes with number of bookmarks in each episode
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -25,14 +27,12 @@ class EpisodeBookmarksScreen extends Component {
     }
 
     render() {
-        
         return (
             <View>
                 <FlatList
                     data={this.props.podcast_bookmarks}
                     keyExtractor={item => item.created_at}
-                    renderItem=
-                        {this.renderItems}
+                    renderItem={this.renderItems}
                 />
             </View>
         )
